@@ -1,11 +1,18 @@
 import HealthTip from '../models/HealthTip.js';
 
+const defaultTips = [
+  { title: 'Stay Hydrated', content: 'Drink at least 8 glasses of water daily.', category: 'Droplets' },
+  { title: 'Eat Balanced Meals', content: 'Include fruits, vegetables, and whole grains.', category: 'Apple' },
+  { title: 'Get Enough Vitamin D', content: 'Spend time in morning sunlight.', category: 'Sun' },
+  { title: 'Exercise Regularly', content: 'At least 30 minutes of moderate exercise daily.', category: 'Heart' },
+];
+
 export const getHealthTips = async (req, res) => {
   try {
     const tips = await HealthTip.find({ isActive: true }).sort({ createdAt: -1 });
-    res.json(tips);
+    res.json(tips.length > 0 ? tips : defaultTips);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json(defaultTips);
   }
 };
 
